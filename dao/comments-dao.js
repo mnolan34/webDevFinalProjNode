@@ -4,4 +4,5 @@ import tuitsModel from "../mongoose/tuits-model.js";
 export const findAllComments = () => commentsModel.find();
 export const createComment = (uid, mid, body) => commentsModel.create(uid, mid, body);
 export const deleteComment = (cid) => commentsModel.deleteOne({_id: cid});
-export const updateComment = (cid, comment) => tuitsModel.updateOne({_id: cid}, {$set: comment});
+export const updateComment = (cid, comment) => commentsModel.updateOne({_id: cid}, {$set: comment});
+export const findAllCommentsByMovie = (mid) => commentsModel.find(mid);

@@ -1,5 +1,4 @@
-import people from './users/user.js';
-let users = people;
+//Need to implement users from db
 
 const userController = (app) => {
     app.get('/api/users', findAllUsers);
