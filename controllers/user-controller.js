@@ -1,55 +1,53 @@
-//Need to implement users from db
+import {
+        findAllUsers,
+        findUserById,
+        createUser,
+        deleteUser,
+        updateUser
+        } from "../dao/users-dao.js";
+import users from "../mongoose/Users/user-model.js";
+
 
 const userController = (app) => {
-    app.get('/api/users', findAllUsers);
-    app.get('/api/users/:uid', findUserById);
-    app.post('/api/users', createUser);
-    app.delete('/api/users/:uid', deleteUser);
-    app.put('/api/users/:uid', updateUser);
+    app.get('/api/users', findAllTheUsers);
+    app.get('/api/users/:uid', findAUserById);
+    app.post('/api/users', createNewUser);
+    app.delete('/api/users/:uid', deleteAUser);
+    app.put('/api/users/:uid', updateAUser);
 }
 
-const updateUser = (req, res) => {
+//updateAUser implemented
+const updateAUser = async (req, res) => {
     const userId = req.params['uid'];
     const updatedUser = req.body;
-    users = users.map(usr =>
-        usr._id === userId ?
-        updatedUser :
-        usr);
-    res.sendStatus(200);
+    const status = await updateUser(userId, updatedUser);
+    res.send(status);
 }
 
-const deleteUser = (req, res) => {
+//deleteUser implemented
+const deleteAUser = async (req, res) => {
     const userId = req.params['uid'];
-    users = users.filter(usr =>
-        usr._id !== userId);
-    res.sendStatus(200);
+    const status = await deleteUser(userId);
+    res.send(status);
 }
 
-
-const createUser = (req, res) => {
+//Create New User Made
+const createNewUser = async (req, res) => {
     const newUser = req.body;
-    newUser._id = (new Date()).getTime() + '';
-    users.push(newUser);
-    res.json(newUser);
+    const insertedUser = await createUser(newUser)
+    res.json(insertedUser);
 }
 
-const findUserById = (req, res) => {
+//implemented userById
+const findAUserById = async (req, res) => {
     const userId = req.params.uid;
-    const user = users.find(u=> u._id === userId);
+    const user = await findUserById(userId);
     res.json(user);
 }
 
-const findUsersByType =  (type) => {
-    const wantedUsers = users.filter(user => user.type === type);
-    return wantedUsers;
-}
-
-const findAllUsers = (req, res) => {
-    const type = req.query.type;
-    if(type){
-        res.json(findUsersByType(type));
-        return;
-    }
+//find all users implemented
+const findAllTheUsers = (req, res) => {
+    const users = findAllUsers();
     res.json(users);
 }
 
