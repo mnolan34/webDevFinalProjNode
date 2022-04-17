@@ -1,11 +1,5 @@
-import {
-        findAllUsers,
-        findUserById,
-        createUser,
-        deleteUser,
-        updateUser
-        } from "../dao/users-dao.js";
-import users from "../mongoose/Users/user-model.js";
+import * as usersDao from "../dao/users-dao.js";
+
 
 
 const userController = (app) => {
@@ -16,39 +10,30 @@ const userController = (app) => {
     app.put('/api/users/:uid', updateAUser);
 }
 
-//updateAUser implemented
-const updateAUser = async (req, res) => {
-    const userId = req.params['uid'];
-    const updatedUser = req.body;
-    const status = await updateUser(userId, updatedUser);
-    res.send(status);
+const findAllUsers = async (req, res) => {
+    return await usersDao.findAllUsers().then(user => res.json(user));
 }
 
-//deleteUser implemented
-const deleteAUser = async (req, res) => {
-    const userId = req.params['uid'];
-    const status = await deleteUser(userId);
-    res.send(status);
-}
-
-//Create New User Made
-const createNewUser = async (req, res) => {
-    const newUser = req.body;
-    const insertedUser = await createUser(newUser)
-    res.json(insertedUser);
-}
-
-//implemented userById
-const findAUserById = async (req, res) => {
+const findUserById = async (req, res) => {
     const userId = req.params.uid;
-    const user = await findUserById(userId);
-    res.json(user);
+    return await usersDao.findUserById(userId).then(user => res.json(user));
 }
 
-//find all users implemented
-const findAllTheUsers = (req, res) => {
-    const users = findAllUsers();
-    res.json(users);
+const createUser = async (req, res) => {
+    return await usersDao.createUser(req.body).then(user => res.json(user));
 }
+
+const deleteUser = async (req, res) => {
+    const userId = req.params.uid;
+    return await usersDao.deleteUser(userId).then(status => res.json(status));
+}
+
+const updateUser = async (req, res) => {
+    const userId = req.params.uid;
+    const updatedUser = req.body;
+    return await usersDao.updateUser(userId, updatedUser).then(status => res.json(status));
+}
+
+
 
 export default userController;
