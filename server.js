@@ -17,13 +17,14 @@ mongoose.connect(connectionString);
 
 //Build the App
 const app = express();
-app.use(cors({
-    credentials: true,
-    origin: process.env.CORS_ORIGIN
-}));
+app.use(cors());
+   //{
+   // credentials: true,
+  //  origin: process.env.CORS_ORIGIN
+//}));
 app.use(express.json());
 //TODO Doublecheck below notation
-app.use(express.session());
+//app.use(express.session());
 
 
 userController(app);
