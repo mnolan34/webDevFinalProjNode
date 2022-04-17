@@ -18,5 +18,6 @@ app.use(cors());
 app.use(express.json());
 
 userController(app);
+movieController(app);
 
 app.listen(process.env.PORT || 4000);
