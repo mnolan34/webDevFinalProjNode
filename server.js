@@ -27,6 +27,7 @@ app.use(express.session());
 
 
 userController(app);
+movieController(app);
 
 app.get('/', (req, res) =>
     res.send('Welcome!'));
