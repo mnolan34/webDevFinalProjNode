@@ -4,9 +4,9 @@ import movieSchema from "../Movies/movie-schema.js";
 
 const commentsSchema = new mongoose.Schema({
     body: String,
-    postedBy: {type: userSchema},
+    postedBy: {type: Schema.Types.ObjectId, ref: "user"},
     postedOn: Date,
-    movie: {type: movieSchema},
+    movie: {type: Schema.Types.ObjectId, ref: "movie"},
 }, {collection: 'comments'});
 
 export default commentsSchema;
