@@ -2,12 +2,8 @@ import mongoose from 'mongoose';
 
 
 const movieSchema = mongoose.Schema({
-    movieTitle: String,
-    omdbID: String,
-    movieImage: String,
-    description: String,
-    year: Number,
-    rating: String
+    movieTitle: {type: String, required: true},
+    omdbID: {type:String, required: true}
 }, { collection: 'movies' });
 
 export default movieSchema;
