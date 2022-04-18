@@ -1,12 +1,10 @@
-import mongoose from "mongoose";
-import userSchema from "../Users/user-schema.js";
-import movieSchema from "../Movies/movie-schema.js";
+import mongoose, {Schema} from "mongoose";
 
 const commentsSchema = new mongoose.Schema({
     body: String,
-    postedBy: {type: Schema.Types.ObjectId, ref: "user"},
+    postedBy: { type: Schema.Types.ObjectId, ref: "userModel"},
     postedOn: Date,
-    movie: {type: Schema.Types.ObjectId, ref: "movie"},
+    movie: { type: Schema.Types.ObjectId, ref: "movieModel"},
 }, {collection: 'comments'});
 
 export default commentsSchema;
