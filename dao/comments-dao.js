@@ -6,4 +6,4 @@ export const deleteComment = (cid) => commentsModel.deleteOne({_id: cid});
 export const updateComment = (cid, comment) => commentsModel.updateOne({_id: cid}, {$set: comment});
 export const findAllCommentsByMovie = (mid) => commentsModel.find(mid);
 
-module.exports(findAllComments, createComment, deleteComment, updateComment, findAllCommentsByMovie);
+export default { findAllComments, createComment, deleteComment, updateComment, findAllCommentsByMovie }

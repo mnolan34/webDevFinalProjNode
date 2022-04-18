@@ -33,6 +33,6 @@ const dislikeMovie = () => {}
 const findAllMovies = () => {}
 const deleteMovie = () => {}
 
-module.exports = {
+export default{
     findMovieByImdbID, dislikeMovie, findAllMovies, deleteMovie, likeMovie
-}
+};
