@@ -11,6 +11,12 @@ const findAllComments = async (req,res) => {
     res.json(comments);
 }
 
+const findAllCommentsByMovie = async (req, res) => {
+    const movieId = req.params.mid;
+    const comments = await commentsDao.findAllCommentsByMovie(movieId);
+    res.json(comments);
+}
+
 const updateComment = async (req,res) => {
     const CommentToUpdate = req.params.cid;
     const updatedComment = req.body;
@@ -27,6 +33,7 @@ const deleteComment = async (req,res) => {
 export default(app) =>{
     app.post('/api/comments', createComment);
     app.get('/api/comments', findAllComments);
+    app.get('/api/comments/:mid', findAllCommentsByMovie);
     app.put('/api/comments/:cid', updateComment);
     app.delete('/api/comments/:cid', deleteComment);
 }
