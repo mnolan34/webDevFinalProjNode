@@ -3,11 +3,11 @@ import * as usersDao from "../dao/users-dao.js";
 
 
 const userController = (app) => {
-    app.get('/api/users', findAllTheUsers);
-    app.get('/api/users/:uid', findAUserById);
-    app.post('/api/users', createNewUser);
-    app.delete('/api/users/:uid', deleteAUser);
-    app.put('/api/users/:uid', updateAUser);
+    app.get('/api/users', findAllUsers);
+    app.get('/api/users/:uid', findUserById);
+    app.post('/api/users', createUser);
+    app.delete('/api/users/:uid', deleteUser);
+    app.put('/api/users/:uid', updateUser);
 }
 
 const findAllUsers = async (req, res) => {
