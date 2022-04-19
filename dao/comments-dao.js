@@ -9,4 +9,11 @@ export const findAllCommentsByMovie = (mid) => commentsModel.find(mid);
 //Added functions
 export const findAllCommentsByUser = (uid) => commentsModel.find(uid);
 
-export default { findAllComments, createComment, deleteComment, updateComment, findAllCommentsByMovie }
+export default { findAllComments,
+                createComment,
+                deleteComment,
+                updateComment,
+                findAllCommentsByMovie,
+                findAllCommentsByUser
+
+                }
