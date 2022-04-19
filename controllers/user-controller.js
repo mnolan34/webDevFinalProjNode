@@ -32,11 +32,12 @@ const updateUser = async (req, res) => {
     return await usersDao.updateUser(userId, updatedUser).then(status => res.json(status));
 }
 
+/**
 const findUserByUsername = async (req, res) => {
     const userName = req.params.username;
     const returnedUser = usersDao.findUserByUsername(userName);
     res.send(returnedUser);
 }
-
+*/
 
 export default userController;
