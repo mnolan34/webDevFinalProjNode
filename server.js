@@ -1,15 +1,27 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from 'cors';
+import session from "express-session";
 
 import userController from "./controllers/user-controller.js";
 import commentController from "./controllers/comment-controller.js";
 import likeController from "./controllers/like-controller.js";
 import movieController from "./controllers/movie-controller.js";
 
+//SetUp Express
 const app = express();
-app.use(cors());
 app.use(express.json());
+
+//SetUpCors
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}));
+//SetUpSession
+app.use(session({
+    secret: 'SECRET-SECRET',
+    cookie: {secure: false}
+}));
 
 const PROTOCOL = "mongodb+srv";
 const DB_USERNAME = process.env.USERNAME;
