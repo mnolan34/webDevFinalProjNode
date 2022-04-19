@@ -7,6 +7,7 @@ import userController from "./controllers/user-controller.js";
 import commentController from "./controllers/comment-controller.js";
 import likeController from "./controllers/like-controller.js";
 import movieController from "./controllers/movie-controller.js";
+import authController from "./controllers/auth-controller.js";
 
 //SetUp Express
 const app = express();
@@ -36,5 +37,10 @@ userController(app);
 movieController(app);
 likeController(app);
 commentController(app);
+authController(app);
+
+app.get('/', (request, response) => {
+    response.send("Welcome to Group 14's API!");
+});
 
 app.listen(process.env.PORT || 4000);
