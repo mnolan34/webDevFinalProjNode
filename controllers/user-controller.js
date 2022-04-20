@@ -1,17 +1,22 @@
 import * as usersDao from "../dao/users-dao.js";
-
-
+import {findUserByType} from "../dao/users-dao.js";
 
 const userController = (app) => {
-    app.get('/api/users', findAllTheUsers);
-    app.get('/api/users/:uid', findAUserById);
-    app.post('/api/users', createNewUser);
-    app.delete('/api/users/:uid', deleteAUser);
-    app.put('/api/users/:uid', updateAUser);
+    app.get('/api/users', findAllUsers);
+    app.get('/api/users/:typeOfUser', findUserByType);
+    app.get('/api/users/:uid', findUserById);
+    app.post('/api/users', createUser);
+    app.delete('/api/users/:uid', deleteUser);
+    app.put('/api/users/:uid', updateUser);
 }
 
 const findAllUsers = async (req, res) => {
     return await usersDao.findAllUsers().then(user => res.json(user));
+}
+
+const findUsersByType = async (req, res) => {
+    const userType = req.params.userType;
+    return await usersDao.findUserByType(userType).then(user => res.json(user));
 }
 
 const findUserById = async (req, res) => {
@@ -34,6 +39,12 @@ const updateUser = async (req, res) => {
     return await usersDao.updateUser(userId, updatedUser).then(status => res.json(status));
 }
 
-
+/**
+const findUserByUsername = async (req, res) => {
+    const userName = req.params.username;
+    const returnedUser = usersDao.findUserByUsername(userName);
+    res.send(returnedUser);
+}
+*/
 
 export default userController;

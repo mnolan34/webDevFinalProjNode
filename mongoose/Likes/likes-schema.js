@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const likesSchema = new mongoose.Schema({
-    user: {type: Schema.Types.ObjectId, ref: "UserModel"},
-    movie: {type: Schema.Types.ObjectId, ref: "MovieModel"}
+const likesSchema = mongoose.Schema({
+    user: {type: mongoose.Schema.Types.ObjectId, ref: "userModel"},
+    movie: {type: mongoose.Schema.Types.ObjectId, ref: "movieModel"}
 }, {collection: "likes"});
 
 export default likesSchema;

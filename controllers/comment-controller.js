@@ -17,6 +17,13 @@ const findAllCommentsByMovie = async (req, res) => {
     res.json(comments);
 }
 
+const findAllCommentsByUser = async (req, res) => {
+    const userId = req.params.uid;
+    const comments = await commentsDao.findAllCommentsByUser(userId);
+    //res.json(comments);
+    comments.then(comment => res.json(comment));
+}
+
 const updateComment = async (req,res) => {
     const CommentToUpdate = req.params.cid;
     const updatedComment = req.body;
@@ -34,6 +41,8 @@ export default(app) =>{
     app.post('/api/comments', createComment);
     app.get('/api/comments', findAllComments);
     app.get('/api/comments/:mid', findAllCommentsByMovie);
+    //TODO: Make sure this is correct URL, not same as Movie
+    app.get('/api/comments/:uid', findAllCommentsByUser);
     app.put('/api/comments/:cid', updateComment);
     app.delete('/api/comments/:cid', deleteComment);
 }

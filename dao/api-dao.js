@@ -1,4 +1,4 @@
-import moviesModel from "../mongoose/Movies/movies-model.js";
+import moviesModel from "../mongoose/Movies/movie-model.js";
 
 const findMovieByImdbID = async (imdbID) => {
     return moviesModel.findOne({imdbID})
@@ -33,6 +33,6 @@ const dislikeMovie = () => {}
 const findAllMovies = () => {}
 const deleteMovie = () => {}
 
-module.exports = {
+export default{
     findMovieByImdbID, dislikeMovie, findAllMovies, deleteMovie, likeMovie
-}
+};
