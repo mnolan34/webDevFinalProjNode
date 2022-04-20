@@ -7,6 +7,7 @@ import userController from "./controllers/user-controller.js";
 import commentController from "./controllers/comment-controller.js";
 import likeController from "./controllers/like-controller.js";
 import movieController from "./controllers/movie-controller.js";
+import bookmarksController from './controllers/bookmark-controller.js';
 import authController from "./controllers/auth-controller.js";
 
 //SetUp Express
@@ -24,6 +25,7 @@ app.use(session({
     cookie: {secure: false}
 }));
 
+
 const PROTOCOL = "mongodb+srv";
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
@@ -37,6 +39,7 @@ userController(app);
 movieController(app);
 likeController(app);
 commentController(app);
+bookmarksController(app)
 authController(app);
 
 app.get('/', (request, response) => {
