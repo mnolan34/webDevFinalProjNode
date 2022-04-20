@@ -44,7 +44,7 @@ const findUsers = (req, res) => {
     res.json(users);
 }
 
-module.exports = (app) => {
+export default(app) => {
     app.post('/api/register', register);
     app.post('/api/profile', profile);
     app.post('/api/signin', login);
