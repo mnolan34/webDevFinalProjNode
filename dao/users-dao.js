@@ -9,5 +9,7 @@ export const updateUser = (uid, user) => userModel.updateOne({ _id: uid }, { $se
 //auth functions
 export const findUserByLogin = (userName, password) => userModel.findOne({userName, password});
 export const findUserByUsername = (userName) => userModel.findOne(userName);
+export const findUserByType = (type) => userModel.find(type);
 
-export default { findAllUsers, findUserById, createUser, deleteUser, updateUser, findUserByLogin, findUserByUsername};
+export default { findAllUsers, findUserById, createUser, deleteUser, updateUser, findUserByLogin, findUserByUsername,
+                    findUserByType};

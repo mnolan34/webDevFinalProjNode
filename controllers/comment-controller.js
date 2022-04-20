@@ -19,8 +19,9 @@ const findAllCommentsByMovie = async (req, res) => {
 
 const findAllCommentsByUser = async (req, res) => {
     const userId = req.params.uid;
-    const comments = await commendsDao.findAllCommentsByUser(userId);
-    res.json(comments);
+    const comments = await commentsDao.findAllCommentsByUser(userId);
+    //res.json(comments);
+    comments.then(comment => res.json(comment));
 }
 
 const updateComment = async (req,res) => {

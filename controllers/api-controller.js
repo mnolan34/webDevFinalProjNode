@@ -1,4 +1,4 @@
-const API_KEY = '';
+const API_KEY = 'k_ouq4szjo';
 const API_URL = 'https://imdb-api.com/en/api';
 import apiDao from "../dao/api-dao.js";
 
