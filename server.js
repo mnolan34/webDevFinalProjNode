@@ -6,6 +6,7 @@ import userController from "./controllers/user-controller.js";
 import commentController from "./controllers/comment-controller.js";
 import likeController from "./controllers/like-controller.js";
 import movieController from "./controllers/movie-controller.js";
+import bookmarksController from './controllers/bookmark-controller.js';
 
 const PROTOCOL = "mongodb+srv";
 const DB_USERNAME = process.env.USERNAME;
@@ -24,5 +25,6 @@ userController(app);
 movieController(app);
 likeController(app);
 commentController(app);
+bookmarksController(app)
 
 app.listen(process.env.PORT || 4000);
