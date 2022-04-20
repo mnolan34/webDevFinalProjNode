@@ -25,8 +25,8 @@ app.use(session({
 }));
 
 const PROTOCOL = "mongodb+srv";
-const DB_USERNAME = process.env.USERNAME;
-const DB_PASSWORD = process.env.PASSWORD;
+const DB_USERNAME = process.env.DB_USERNAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
 const HOST = process.env.DB_HOST;
 const DB_NAME = "netflicks";
 const DB_QUERY = "retryWrites=true&w=majority";
