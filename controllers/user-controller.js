@@ -1,4 +1,5 @@
 import * as usersDao from "../dao/users-dao.js";
+import users from "../mongoose/Users/user-schema";
 import {findUserByType} from "../dao/users-dao.js";
 
 const userController = (app) => {
@@ -21,7 +22,8 @@ const findUsersByType = async (req, res) => {
 
 const findUserById = async (req, res) => {
     const userId = req.params.uid;
-    return await usersDao.findUserById(userId).then(user => res.json(user));
+    const user = users.find(u=> u._id === userId);
+    res.json(user);
 }
 
 const createUser = async (req, res) => {
