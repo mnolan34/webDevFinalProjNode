@@ -4,6 +4,10 @@ const findMovieByImdbID = async (imdbID) => {
     return moviesModel.findOne({imdbID})
 }
 
+const findMoviesBySearch = async (expresion) => {
+
+}
+
 const likeMovie = async (movie) => {
     let actualMovie = {}
     // try {
