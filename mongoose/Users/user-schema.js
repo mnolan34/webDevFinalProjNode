@@ -4,7 +4,7 @@ const userSchema = mongoose.Schema({
     lastName: String,
     username: {type:String, required: true},
     emailOrNumber: {type: String, required: true},
-    isUser: {type: Boolean, required: true},
+    isCritic: {type: Boolean, required: true},
     isAdmin: {type: Boolean, required: true},
     password: {type: String, required: true},
     dateJoined: {type:Date, default: Date.now()}
