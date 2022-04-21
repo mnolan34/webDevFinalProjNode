@@ -1,6 +1,4 @@
 import * as usersDao from "../dao/users-dao.js";
-import user from "../mongoose/Users/user-schema";
-import {findUserByType} from "../dao/users-dao.js";
 
 const userController = (app) => {
     app.get('/api/users', findAllUsers);
