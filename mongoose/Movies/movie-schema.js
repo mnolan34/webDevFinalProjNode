@@ -9,6 +9,7 @@ const movieSchema = mongoose.Schema({
     movieDescription: {type: String},
     parentRating: {type: String},
     yearReleased: {type: String},
+    similarMovies: {type: JSON}
 }, { collection: 'movies' });
 
 export default movieSchema;
