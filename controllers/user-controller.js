@@ -23,8 +23,13 @@ const findUsersByType = async (req, res) => {
  */
 
 const findUserById = async (req, res) => {
-    const userId = req.params.uid;
-    return await usersDao.findUserById(userId).then(user => res.json(user));
+    const userId = req.params["id"];
+    const user = usersDao.findUserById(userId);
+    if(user){
+        res.json(user);
+    }else{
+        res.sendStatus(404);
+    }
 }
 
 const findIfUserCritic = async (req, res) => {
@@ -49,9 +54,10 @@ const deleteUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const userId = req.params.uid;
+    const userId = req.params['id'];
     const updatedUser = req.body;
-    return await usersDao.updateUser(userId, updatedUser).then(status => res.json(status));
+    const status = await usersDao.updateUser(userId, updatedUser);
+    res.json(status);
 }
 
 /**
