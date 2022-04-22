@@ -1,6 +1,7 @@
 const API_KEY = 'k_ouq4szjo';
 const API_URL = 'https://imdb-api.com/en/API';
 import apiDao from "../dao/api-dao.js";
+import axios from "axios";
 
 const findDetailsByImdbID = async (req, res) => {
     const requestedMovie = req.params.imdbID;
