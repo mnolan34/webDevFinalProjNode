@@ -4,8 +4,8 @@ const userController = (app) => {
     app.get('/api/users', findAllUsers);
     //app.get('/api/users/:typeOfUser', findUserByType);
     app.get('/api/users/:uid', findUserById);
-    app.get('/api/users/admin/:uid', findIfUserAdmin);
-    app.get('/api/users/critic/:uid', findIfUserCritic);
+    app.get('/api/users/types/admin/:uid', findIfUserAdmin);
+    app.get('/api/users/types/critic/:uid', findIfUserCritic);
     app.post('/api/users', createUser);
     app.delete('/api/users/:uid', deleteUser);
     app.put('/api/users/:uid', updateUser);
