@@ -1,11 +1,11 @@
 const API_KEY = 'k_ouq4szjo';
-const API_URL = 'https://imdb-api.com/en/api';
+const API_URL = 'https://imdb-api.com/en/API';
 import apiDao from "../dao/api-dao.js";
 
 const findDetailsByImdbID = async (req, res) => {
-    const imdbID = req.params();
-    const movie = await apiDao.findMovieByImdbID(imdbID);
-    res.json(movie);
+    const requestedMovie = req.params.imdbID;
+    const movieDetails = await apiDao.findMovieByImdbID(requestedMovie);
+    res.json(movieDetails);
 }
 
 const findMoviesBySearch = async(req, res) => {
@@ -15,6 +15,6 @@ const findMoviesBySearch = async(req, res) => {
 }
 
 export default(app) => {
-    app.get(`${API_URL}/en/API/Title/${API_KEY}/:id/Trailer`, findDetailsByImdbID);
-    app.get(`${API_URL}/en/API/Search/${API_KEY}/:expression`, findMoviesBySearch);
+    app.get(`${API_URL}/Search/${API_KEY}/:id/Trailer`, findDetailsByImdbID);
+    app.get(`${API_URL}/Search/${API_KEY}/:expression`, findMoviesBySearch);
 }
