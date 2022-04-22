@@ -12,7 +12,7 @@ export const findUserByUsername = (userName) => userModel.findOne(userName);
 export const findUserByType = (type) => {
     console.log(typeof type);
     console.log(type);
-    if (type == "isCritic") {
+    if (type === "isCritic") {
         return userModel.find({ isCritic: { $eq: true } });
     }
     else {
