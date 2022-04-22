@@ -8,14 +8,24 @@ const findDetailsByImdbID = async (req, res) => {
     const movieDetails = await apiDao.findMovieByImdbID(requestedMovie);
     res.json(movieDetails);
 }
-
+/*
 const findMoviesBySearch = async(req, res) => {
     const searchExpression = req.params();
     const movies = await apiDao.findMoviesBySearch(searchExpression);
     res.json(movies);
 }
+ */
+
+//Professor Search
+const searchByTitle = async (movieSearch) => {
+    const searchString  = movieSearch;
+    const response = await axios.get(`${searchUrl}&s=${searchString}`);
+    setMovies(response.data.Search)
+    titleSearchRef.current.value = searchString
+    navigate(`/search/${searchString}`)
+}
 
 export default(app) => {
     app.get(`${API_URL}/Search/${API_KEY}/:id/Trailer`, findDetailsByImdbID);
-    app.get(`${API_URL}/Search/${API_KEY}/:expression`, findMoviesBySearch);
+    app.get(`${API_URL}/Search/${API_KEY}/:expression`, searchByTitle);
 }
