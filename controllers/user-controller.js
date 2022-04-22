@@ -3,7 +3,7 @@ import * as usersDao from "../dao/users-dao.js";
 
 const userController = (app) => {
     app.get('/api/users', findAllUsers);
-    app.get('/api/users/types/:typeOfUser', findUserByType);
+    app.get('/api/users/types/:typeOfUser', findUsersByType);
     app.get('/api/users/:uid', findUserById);
     app.post('/api/users', createUser);
     app.delete('/api/users/:uid', deleteUser);
@@ -14,9 +14,9 @@ const findAllUsers = async (req, res) => {
     return await usersDao.findAllUsers().then(user => res.json(user));
 }
 
-const findUserByType = async (req, res) => {
+const findUsersByType = async (req, res) => {
     const userType = req.params.typeOfUser;
-    return await usersDao.findUserByType(userType).then(user => res.json(user));
+    return await usersDao.findUsersByType(userType).then(user => res.json(user));
 }
 
 const findUserById = async (req, res) => {
