@@ -2,7 +2,8 @@ import * as commentsDao from "../dao/comments-dao.js";
 
 const createComment = async (req,res) => {
     const newComment = req.body;
-    const insertedComment = await commentsDao.createComment(newComment);
+    const movieId = req.params.mid;
+    const insertedComment = await commentsDao.createComment(movieId, newComment);
     res.json(insertedComment);
 }
 
@@ -38,7 +39,7 @@ const deleteComment = async (req,res) => {
 }
 
 export default(app) =>{
-    app.post('/api/comments', createComment);
+    app.post('/api/title/:titleId/comments', createComment);
     app.get('/api/comments', findAllComments);
     app.get('/api/comments/:mid', findAllCommentsByMovie);
     //TODO: Make sure this is correct URL, not same as Movie
