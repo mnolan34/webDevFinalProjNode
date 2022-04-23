@@ -1,9 +1,11 @@
 import * as commentsDao from "../dao/comments-dao.js";
 
 const createComment = async (req,res) => {
-    const newComment = req.body;
+    let userID = req.params.uid === "me" && req.session['profile'] ?
+        req.session['profile']._id : req.params.uid;
     const movieId = req.params.mid;
-    const insertedComment = await commentsDao.createComment(movieId, newComment);
+    const newComment = req.body;
+    const insertedComment = await commentsDao.createComment(userID, movieId, newComment);
     res.json(insertedComment);
 }
 
