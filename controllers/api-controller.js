@@ -1,3 +1,5 @@
+import * as movieDao from "../dao/movies-dao.js";
+
 const API_KEY = 'k_ouq4szjo';
 const API_URL = 'https://imdb-api.com/en/API';
 import apiDao from "../dao/api-dao.js";
@@ -34,7 +36,17 @@ const addDetailsToDB = async (req, res) => {
         res.json(movieDetails);
     }else{
         //If movie not in DB, send it details, add it
-        movieController.createImdbMovie(movieDetails);
+        const movieInMongoFormat = {
+            movieTitle: {movieDetails}.fullTitle,
+            imdbID: {movieDetails}.id,
+            moviePoster: {movieDetails}.posters,
+            movieTrailer: {movieDetails}.trailer.linkEmbed,
+            movieDescription: {movieDetails}.plot,
+            parentRating: {movieDetails}.contentRating,
+            yearReleased: {movieDetails}.year,
+            similarMovies: {movieDetails}.similars
+        }
+        res.json(await movieDao.createMovie(movieInMongoFormat));
     }
 }
 
