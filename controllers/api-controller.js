@@ -8,14 +8,14 @@ import axios from "axios";
 
 
 //This will pull the ImdbId from the search engine
-export const pullImdbId = async (req, res) => {
+const pullImdbId = async (req, res) => {
     const searchedMovie = req.params.title;
     const movieJSON = axios.get(`${API_URL}/Search/${API_KEY}/${searchedMovie}`);
     res.json(movieJSON);
 }
 
 //Listen to Chok's request, and return count and JSON array
-export const displaySearchDetails = async(req, res) => {
+const displaySearchDetails = async(req, res) => {
     const movieArray = pullImdbId(req.params.title);
     const movieNumber = movieArray.length;
     res.json({movieNumber, movieArray})
@@ -30,7 +30,7 @@ const pullMovieDetails = async(req, res) => {
 
 const addDetailsToDB = async (req, res) => {
     const requestedMovie = req.params.imdbID;
-    const movieDetails = await apiDao.findMovieByImdbID(requestedMovie);
+    const movieDetails = await pullMovieDetails(requestedMovie);
     if(movieDetails){
         //If movie exists, can pull current movie
         res.json(movieDetails);
@@ -50,7 +50,6 @@ const addDetailsToDB = async (req, res) => {
     }
 }
 
-
 /*
 const findMoviesBySearch = async(req, res) => {
     const searchExpression = req.params();
@@ -59,7 +58,7 @@ const findMoviesBySearch = async(req, res) => {
 }
  */
 
-//export default(app) => {
-//    app.get(`/api/search/:mid`, searchByTitle);
-//    app.get(`/api/titles/:titleId`, findDetailsByImdbId);
-//}
+export default(app) => {
+    app.get(`/api/search/:expression`, displaySearchDetails);
+    app.get(`/api/titles/:titleId`, addDetailsToDB);
+}
