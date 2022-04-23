@@ -5,19 +5,25 @@ const API_URL = 'https://imdb-api.com/en/API';
 import axios from "axios";
 
 
-//This will pull the ImdbId from the search engine
-const pullImdbId = async (req, res) => {
-    const searchedMovie = req.params.title;
-    const movieJSON = axios.get(`${API_URL}/Search/${API_KEY}/${searchedMovie}`);
-    res.json(movieJSON);
+//Listen to Chok's request, and return count and JSON array
+const displaySearchDetails = async (req, res) => {
+    // Get query params "q"
+    const searchedMovie = req.query.q;
+    // Run IMDB search API
+    const searchResponse = await axios.get(`${API_URL}/Search/${API_KEY}/${searchedMovie}`);
+    // Parse the response from IMDB API
+    const searchResults = searchResponse.data.results;
+    const count = searchResults.length;
+    const parsedResult = searchResults.map(title => {return {"_id": title.id, "title": title.title, "image": title.image}});
+    
+    // Return parsed return per my resquest
+    res.json({count: count, titles: parsedResult});
 }
 
-//Listen to Chok's request, and return count and JSON array
-const displaySearchDetails = async(req, res) => {
-    const movieArray = pullImdbId(req.params.title);
-    const movieNumber = movieArray.length;
-    res.json({movieNumber, movieArray})
-}
+export default(app) => {
+    app.get(`/api/search`, displaySearchDetails);
+    // Other APIs
+    }
 
 //This will pull the movie details from the Imdb API
 const pullMovieDetails = async(req, res) => {
