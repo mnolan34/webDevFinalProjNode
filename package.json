@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/mnolan34/web-dev-node-repo#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "express-session": "^1.17.2",

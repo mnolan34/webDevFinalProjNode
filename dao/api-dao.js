@@ -1,7 +1,7 @@
 import moviesModel from "../mongoose/Movies/movie-model.js";
 
 const findMovieByImdbID = async (imdbID) => {
-    return moviesModel.findOne({imdbID})
+    return moviesModel.findOne({_id: imdbID})
 }
 
 const findMoviesBySearch = async (expresion) => {
