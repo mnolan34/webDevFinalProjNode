@@ -4,10 +4,6 @@ const findMovieByImdbID = async (imdbID) => {
     return moviesModel.findOne({_id: imdbID})
 }
 
-const findMoviesBySearch = async (expresion) => {
-
-}
-
 const likeMovie = async (movie) => {
     let actualMovie = {}
     // try {
@@ -33,10 +29,9 @@ const likeMovie = async (movie) => {
     }
     return actualMovie
 }
-const dislikeMovie = () => {}
-const findAllMovies = () => {}
-const deleteMovie = () => {}
+
 
 export default{
-    findMovieByImdbID, dislikeMovie, findAllMovies, deleteMovie, likeMovie
+    findMovieByImdbID,
+    likeMovie
 };

@@ -52,7 +52,7 @@ const updateUser = (uid, user) =>
  * @returns User Object
  */
 const findUserByUsername = (userName) =>
-    userModel.findOne({userName});
+    userModel.findOne({username : userName});
 
 /**
  * Finds array of users based on userType

@@ -1,19 +1,29 @@
 import commentsModel from "../mongoose/Comments/comments-model.js";
 
-export const findAllComments = () => commentsModel.find();
-export const createComment = (userID, mid, commentBody) => commentsModel.create(userID, mid, commentBody);
-export const deleteComment = (cid) => commentsModel.deleteOne({_id: cid});
-export const updateComment = (cid, comment) => commentsModel.updateOne({_id: cid}, {$set: comment});
-export const findAllCommentsByMovie = (mid) => commentsModel.find(mid);
+export const findAllComments = () =>
+    commentsModel.find();
+
+export const createComment = (userID, mid, commentBody) =>
+    commentsModel.create(userID, mid, commentBody);
+
+export const deleteComment = (cid) =>
+    commentsModel.deleteOne({_id: cid});
+
+export const updateComment = (cid, comment) =>
+    commentsModel.updateOne({_id: cid}, {$set: comment});
+
+export const findAllCommentsByMovie = (mid) =>
+    commentsModel.find({movie : mid});
 
 //Added functions
-export const findAllCommentsByUser = (uid) => commentsModel.find(uid);
+export const findAllCommentsByUser = (uid) =>
+    commentsModel.find({postedBy : uid});
 
-export default { findAllComments,
-                createComment,
-                deleteComment,
-                updateComment,
-                findAllCommentsByMovie,
-                findAllCommentsByUser
-
-                }
+export default {
+    findAllComments,
+    createComment,
+    deleteComment,
+    updateComment,
+    findAllCommentsByMovie,
+    findAllCommentsByUser
+};
