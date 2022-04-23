@@ -6,16 +6,9 @@ export const findAllLikes = () =>
 export const findAllLikesByMovie = (mid) =>
     likesModel.find({movie: mid});
 
-
 export const createLike = (uid, mid) =>
     likesModel.create(uid, mid);
 
 export const deleteLike = (likeId) =>
     likesModel.deleteOne({_id: likeId});
 
-export default {
-    findAllLikes,
-    findAllLikesByMovie,
-    createLike,
-    deleteLike
-};

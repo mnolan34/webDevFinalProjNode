@@ -1,10 +1,10 @@
 import moviesModel from "../mongoose/Movies/movie-model.js";
 
-const findMovieByImdbID = async (imdbID) => {
+export const findMovieByImdbID = async (imdbID) => {
     return moviesModel.findOne({_id: imdbID})
 }
 
-const likeMovie = async (movie) => {
+export const likeMovie = async (movie) => {
     let actualMovie = {}
     // try {
     const existingMovie = await moviesModel.findOne({imdbID: movie.imdbID})
@@ -29,9 +29,3 @@ const likeMovie = async (movie) => {
     }
     return actualMovie
 }
-
-
-export default{
-    findMovieByImdbID,
-    likeMovie
-};
