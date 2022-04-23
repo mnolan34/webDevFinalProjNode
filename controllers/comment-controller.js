@@ -44,7 +44,6 @@ export default(app) =>{
     app.post('/api/title/:titleId/comments', createComment);
     app.get('/api/comments', findAllComments);
     app.get('/api/titles/:titleId/comments', findAllCommentsByMovie);
-    //TODO: Make sure this is correct URL, not same as Movie
     app.get('/api/comments/:uid', findAllCommentsByUser);
     app.put('/api/comments/:cid', updateComment);
     app.delete('/api/comments/:cid', deleteComment);
