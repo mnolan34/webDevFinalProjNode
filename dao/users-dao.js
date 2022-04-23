@@ -46,10 +46,21 @@ const updateUser = (uid, user) =>
     { _id: uid },
     { $set: user }
     );
-
+/**
+ * Finds user according to username
+ * @param {string} userName Unique username of user to be pulled
+ * @returns User Object
+ */
 const findUserByUsername = (userName) =>
-    userModel.findOne(userName);
+    userModel.findOne({userName});
 
+/**
+ * Finds array of users based on userType
+ * @param type
+ * @returns array of usersMatching Type
+ */
+
+//TODO Fix Below Function
 const findUserByType = (type) =>
     userModel.find(type);
 
