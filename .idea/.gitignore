@@ -8,3 +8,4 @@
 /dataSources.local.xml
 #Added per GT's request
 /node_modules
+/.env
