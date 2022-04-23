@@ -2,8 +2,6 @@ import * as movieDao from "../dao/movies-dao.js";
 
 const API_KEY = 'k_ouq4szjo';
 const API_URL = 'https://imdb-api.com/en/API';
-import apiDao from "../dao/api-dao.js";
-import movieController from "./movie-controller";
 import axios from "axios";
 
 
