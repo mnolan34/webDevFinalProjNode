@@ -1,9 +1,11 @@
 import * as commentsDao from "../dao/comments-dao.js";
 
 const createComment = async (req,res) => {
-    const newComment = req.body;
+    let userID = req.params.uid === "me" && req.session['profile'] ?
+        req.session['profile']._id : req.params.uid;
     const movieId = req.params.mid;
-    const insertedComment = await commentsDao.createComment(movieId, newComment);
+    const newComment = req.body;
+    const insertedComment = await commentsDao.createComment(userID, movieId, newComment);
     res.json(insertedComment);
 }
 
@@ -21,8 +23,8 @@ const findAllCommentsByMovie = async (req, res) => {
 const findAllCommentsByUser = async (req, res) => {
     const userId = req.params.uid;
     const comments = await commentsDao.findAllCommentsByUser(userId);
-    //res.json(comments);
-    comments.then(comment => res.json(comment));
+    res.json(comments);
+    //comments.then(comment => res.json(comment));
 }
 
 const updateComment = async (req,res) => {
@@ -42,7 +44,6 @@ export default(app) =>{
     app.post('/api/title/:titleId/comments', createComment);
     app.get('/api/comments', findAllComments);
     app.get('/api/titles/:titleId/comments', findAllCommentsByMovie);
-    //TODO: Make sure this is correct URL, not same as Movie
     app.get('/api/comments/:uid', findAllCommentsByUser);
     app.put('/api/comments/:cid', updateComment);
     app.delete('/api/comments/:cid', deleteComment);
