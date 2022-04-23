@@ -22,7 +22,7 @@ app.use(cors({
 //SetUpSession
 app.use(session({
     secret: 'SECRET-SECRET',
-    cookie: {secure: false}
+    cookie: { secure: false }
 }));
 
 

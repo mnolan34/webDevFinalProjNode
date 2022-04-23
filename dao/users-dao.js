@@ -63,3 +63,4 @@ export const findUserByUsername = (userName) =>
 //TODO Fix Below Function
 export const findUserByType = (type) =>
     userModel.find(type);
+

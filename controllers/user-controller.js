@@ -17,8 +17,8 @@ const findAllUsers = async (req, res) => {
 
 /*
 const findUsersByType = async (req, res) => {
-    const userType = req.params.userType;
-    return await usersDao.findUserByType(userType).then(user => res.json(user));
+    const userType = req.params.typeOfUser;
+    return await usersDao.findUsersByType(userType).then(user => res.json(user));
 }
  */
 
