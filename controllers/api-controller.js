@@ -4,26 +4,40 @@ const API_KEY = 'k_ouq4szjo';
 const API_URL = 'https://imdb-api.com/en/API';
 import axios from "axios";
 
-
-//Listen to Chok's request, and return count and JSON array
+/**
+ * Search for movies based on given query.
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 const displaySearchDetails = async (req, res) => {
     // Get query params "q"
     const searchedMovie = req.query.q;
     // Run IMDB search API
-    const searchResponse = await axios.get(`${API_URL}/Search/${API_KEY}/${searchedMovie}`);
-    // Parse the response from IMDB API
-    const searchResults = searchResponse.data.results;
-    const count = searchResults.length;
-    const parsedResult = searchResults.map(title => {return {"_id": title.id, "title": title.title, "image": title.image}});
-    
-    // Return parsed return per my resquest
-    res.json({count: count, titles: parsedResult});
-}
+    try {
+        // Handle 20x response
+        // Send search request. Throw error if no respond in 15 seconds
+        const searchResponse = await axios.get(`${API_URL}/SearchMovie/${API_KEY}/${searchedMovie}`, {timeout: 15000});
+        // Parse the response from IMDB API
+        const searchResults = searchResponse.data.results;
 
-export default(app) => {
-    app.get(`/api/search`, displaySearchDetails);
-    // Other APIs
+        // IMDB API server could be busy and give results: null as response.
+        // Tell client of gateway timeout (504)
+        if (!searchResults) res.sendStatus(504);
+        else {
+            // Otherwise, proceed as usual.
+            const count = searchResults.length;
+            const parsedResult = searchResults.map(title => {return {"_id": title.id, "title": title.title, "image": title.image}});
+
+            // Return parsed return
+            res.json({count: count, titles: parsedResult});
+        }
+    }catch (error) {
+        // Handle time out and error response (Not 20x)
+        res.sendStatus(504);
     }
+}
 
 //This will pull the movie details from the Imdb API
 const pullMovieDetails = async(req, res) => {
@@ -63,6 +77,6 @@ const findMoviesBySearch = async(req, res) => {
  */
 
 export default(app) => {
-    app.get(`/api/search/:expression`, displaySearchDetails);
+    app.get(`/api/search`, displaySearchDetails);
     app.get(`/api/titles/:titleId`, addDetailsToDB);
 }
