@@ -4,7 +4,11 @@ export const findAllComments = () =>
     commentsModel.find();
 
 export const createComment = (userID, mid, commentBody) =>
-    commentsModel.create(userID, mid, commentBody);
+    commentsModel.create(
+        {user: userID},
+        {movie: mid},
+        {comment: commentBody}
+        )
 
 export const deleteComment = (cid) =>
     commentsModel.deleteOne({_id: cid});
