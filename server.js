@@ -9,6 +9,7 @@ import likeController from "./controllers/like-controller.js";
 import movieController from "./controllers/movie-controller.js";
 import bookmarksController from './controllers/bookmark-controller.js';
 import authController from "./controllers/auth-controller.js";
+import apiController from "./controllers/api-controller.js";
 
 //SetUp Express
 const app = express();
@@ -41,6 +42,7 @@ likeController(app);
 commentController(app);
 bookmarksController(app)
 authController(app);
+apiController(app);
 
 app.get('/', (request, response) => {
     response.send("Welcome to Group 14's API!");

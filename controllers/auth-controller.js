@@ -1,10 +1,10 @@
 const users = [];
-import userDao from "../dao/users-dao.js";
+import * as userDao from "../dao/users-dao.js";
 
 const register = async (req, res) => {
     const credentials = req.body;
     //implement findUserByUsername
-    const existingUser = await userDao.findUserByUsername;
+    const existingUser = await userDao.findUserByUsername();
 
     if(existingUser){
         return res.sendStatus(403);
