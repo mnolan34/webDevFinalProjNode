@@ -135,8 +135,9 @@ const getCurrentUserProfile = async (req, res) => {
       const reloadedProfile = await userDao.findUserByUsername(profile.username);
       if (reloadedProfile) {
         // non-null means authenticated
-        req.session['profile'] = reloadedProfile;
-        res.json(reloadedProfile);
+        const parsedReloadedProfile = parseProfileData(reloadedProfile);
+        req.session['profile'] = parsedReloadedProfile;
+        res.json(parsedReloadedProfile);
       } else {
         // If null, the user is probably removed from the DB by admin.
         req.session.destroy();
