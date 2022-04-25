@@ -1,5 +1,12 @@
 import * as userDao from "../dao/users-dao.js";
 
+const AuthController = (app) => {
+  app.post('/api/signup', signUp);
+  app.get('/api/profile', getCurrentUserProfile);
+  app.post('/api/signin', signIn);
+  app.post('/api/signout', signOut);
+}
+
 /**
  * Sign up and initiate session if successful.
  *
@@ -120,8 +127,9 @@ const getCurrentUserProfile = async (req, res) => {
       const reloadedProfile = await userDao.findUserByUsername(profile.username);
       if (reloadedProfile) {
         // non-null means authenticated
-        req.session['profile'] = reloadedProfile;
-        res.json(reloadedProfile);
+        const parsedReloadedProfile = parseProfileData(reloadedProfile);
+        req.session['profile'] = parsedReloadedProfile;
+        res.json(parsedReloadedProfile);
       } else {
         // If null, the user is probably removed from the DB by admin.
         req.session.destroy();
@@ -135,9 +143,4 @@ const getCurrentUserProfile = async (req, res) => {
   }
 }
 
-export default (app) => {
-  app.post('/api/signup', signUp);
-  app.get('/api/profile', getCurrentUserProfile);
-  app.post('/api/signin', signIn);
-  app.post('/api/signout', signOut);
-}
+export default AuthController;
