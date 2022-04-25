@@ -1,11 +1,26 @@
+/**
+ * @file Controller RESTful Web service API for authentication resource
+ */
 import * as userDao from "../dao/users-dao.js";
+
+
+/**
+ * Creates authentication controller variable
+ * @param {Express} app Express instance to declare the RESTful Web service API
+ */
+const authController = (app) => {
+  app.post('/api/signup', signUp);
+  app.get('/api/profile', getCurrentUserProfile);
+  app.post('/api/signin', signIn);
+  app.post('/api/signout', signOut);
+}
 
 /**
  * Sign up and initiate session if successful.
- *
- * @param req
- * @param res
- * @returns {Promise<*>}
+ * @param {Request} req Represents request from client, including the request body which
+ * contains the profile of a new user who is trying to sign up.
+ * @param {Response} res Represents response to client, including the
+ * body formatted as JSON arrays containing the user objects
  */
 const signUp = async (req, res) => {
   const newProfile = req.body;
@@ -35,13 +50,11 @@ const signUp = async (req, res) => {
 }
 
 /**
- * Remove password from profile for security purpose.
- *
- * @param result
- * @returns {{firstName: *, lastName: *, emailOrNumber: *, dateJoined: ({default: () => number, type: Date | DateConstructor}|*), isCritic: ({type: Boolean | BooleanConstructor, required: boolean}|*), isAdmin: ({type: Boolean | BooleanConstructor, required: boolean}|*), username}}
+ * Parses the given profile. Note that the password from profile is removed for security purpose.
+ * @param  {Object} profileData
  */
 const parseProfileData = (result) => {
-  return {
+  const profileData = {
     firstName: result.firstName,
     lastName: result.lastName,
     username: result.username,
@@ -49,15 +62,16 @@ const parseProfileData = (result) => {
     isCritic: result.isCritic,
     isAdmin: result.isAdmin,
     dateJoined: result.dateJoined
-  };
+  }
+  return profileData;
 }
 
 /**
- * Sign in and initiate session
- *
- * @param req
- * @param res
- * @returns {Promise<void>}
+ * Sign in and initiate session if successful.
+ * @param {Request} req Represents request from client, including the request body which
+ * contains the profile credentials of a new user who is trying to sign in.
+ * @param {Response} res Represents response to client, including the
+ * body formatted as JSON arrays containing the user objects
  */
 const signIn = async (req, res) => {
   const credentials = req.body;
@@ -87,10 +101,10 @@ const signIn = async (req, res) => {
 
 /**
  * Sign out and clear session.
- *
- * @param req
- * @param res
- * @returns {Promise<void>}
+ * @param {Request} req Represents request from client, including the request session 
+ * which contains the profile of a new user who is trying to sign out.
+ * @param {Response} res Represents response to client, including status on whether 
+ * logging out of the profile was successful or not
  */
 const signOut = async (req, res) => {
   if (!req.session['profile']) {
@@ -99,15 +113,16 @@ const signOut = async (req, res) => {
     req.session.destroy();
     res.sendStatus(200);
   }
-
 }
 
 /**
  * Get current user profile.
- *
- * @param req
- * @param res
- * @returns {Promise<void>}
+ * @param {Request} req Represents request from client, including the request session 
+ * which contains the profile of the current logged in user.
+ * @param {Response} res Represents response to client,  including the
+ * body formatted as JSON arrays containing the current profile object.
+ * The response may also be a status on whether retrieving the current profile 
+ * was successful or not
  */
 const getCurrentUserProfile = async (req, res) => {
   const profile = req.session['profile'];
@@ -135,9 +150,4 @@ const getCurrentUserProfile = async (req, res) => {
   }
 }
 
-export default (app) => {
-  app.post('/api/signup', signUp);
-  app.get('/api/profile', getCurrentUserProfile);
-  app.post('/api/signin', signIn);
-  app.post('/api/signout', signOut);
-}
+export default authController;

@@ -40,7 +40,7 @@ userController(app);
 movieController(app);
 likeController(app);
 commentController(app);
-bookmarksController(app)
+bookmarksController(app);
 authController(app);
 apiController(app);
 
