@@ -1,12 +1,47 @@
 import * as commentsDao from "../dao/comments-dao.js";
+import * as moviesDao from "../dao/movies-dao.js";
+import * as usersDao from "../dao/users-dao.js";
 
+const CommentController = (app) => {
+    app.post('/api/titles/:titleId/comments', createComment);
+    app.get('/api/titles/:titleId/comments', findAllCommentsByMovie);
+    app.put('/api/comments/:cid', updateComment);
+    app.delete('/api/comments/:cid', deleteComment);
+    app.get('/api/comments', findAllComments);
+    app.get('/api/comments/:uid', findAllCommentsByUser);
+}
+
+/**
+ * Create a new comment (For critic)
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 const createComment = async (req,res) => {
-    let userID = req.params.uid === "me" && req.session['profile'] ?
-        req.session['profile']._id : req.params.uid;
-    const movieId = req.params.mid;
-    const newComment = req.body;
-    const insertedComment = await commentsDao.createComment(userID, movieId, newComment);
-    res.json(insertedComment);
+    const profile = req.session['profile']
+
+    // Unauthenticated
+    if (!profile) res.sendStatus(401);
+    else {
+        // Unauthorized if not critic
+        if (!profile.isCritic) res.sendStatus(403);
+        // Proceed if the user is a critic
+        else {
+            try {
+                const userID = await usersDao.findUserByUsername(profile.username);
+                const movieId = await moviesDao.findMovieByImdbId(req.params.titleId);
+                const insertedComment = await commentsDao.createComment(userID, movieId, req.body.comment);
+                res.json({
+                    _id: insertedComment._id,
+                    timestamp: insertedComment.postedOn,
+                    });
+            } catch (error) {
+                // Throw internal server error for any error.
+                res.sendStatus(500);
+            }
+        }
+    }
 }
 
 const findAllComments = async (req,res) => {
@@ -14,10 +49,41 @@ const findAllComments = async (req,res) => {
     res.json(comments);
 }
 
+/**
+ * Finds all comments for a movie
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 const findAllCommentsByMovie = async (req, res) => {
-    const movieId = req.params.mid;
-    const comments = await commentsDao.findAllCommentsByMovie(movieId);
-    res.json(comments);
+    const profile = req.session['profile'];
+    console.log(profile)
+
+    // Unauthenticated
+    if (!profile) res.sendStatus(401);
+
+    // For authenticated user
+    else {
+        try {
+            const movieId = await moviesDao.getMovieIdByImdbId(req.params.titleId);
+            const comments = await commentsDao.findAllCommentsByMovie(movieId).populate(['movie', 'postedBy']);
+            const parsedComments = comments.map(comment => ({
+                _id: comment._id,
+                timestamp: comment.postedOn,
+                username: comment.postedBy.username,
+                comment: comment.comment,
+                avatar: comment.postedBy.avatar
+            }))
+            res.json({
+                count: parsedComments.length,
+                comments: parsedComments
+            });
+        } catch (error) {
+            // Throw internal error
+            res.sendStatus(500);
+        }
+    }
 }
 
 const findAllCommentsByUser = async (req, res) => {
@@ -27,24 +93,76 @@ const findAllCommentsByUser = async (req, res) => {
     //comments.then(comment => res.json(comment));
 }
 
+/**
+ * Update a comment (Must be the comment's owner and a critic)
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 const updateComment = async (req,res) => {
-    const CommentToUpdate = req.params.cid;
-    const updatedComment = req.body;
-    const status = await commentsDao.updateComment(CommentToUpdate, updatedComment);
-    res.send(status);
+    const profile = req.session['profile'];
+    const cid = req.params.cid;
+
+    // Unauthenticated
+    if (!profile) res.sendStatus(401);
+
+    else {
+        try {
+            const comment = await commentsDao.findCommentById(cid).populate('postedBy');
+
+            if (!comment) res.sendStatus(404);
+            else {
+                // Return 403 if not comment owner and critic
+                if (!(profile.isCritic && profile.username === comment.postedBy.username)) res.sendStatus(403);
+
+                // Proceed otherwise
+                else {
+                    await commentsDao.updateComment(cid, req.body.comment);
+                    res.sendStatus(204);
+                }
+            }
+        } catch (error) {
+            // Throw internal error
+            res.sendStatus(500);
+        }
+    }
 }
 
+/**
+ * Delete a comment (Must be the comment's owner and a critic or an admin)
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 const deleteComment = async (req,res) => {
-    const CommentToDelete = req.params.cid;
-    const status = await commentsDao.deleteComment(CommentToDelete);
-    res.send(status);
+    const profile = req.session['profile'];
+    const cid = req.params.cid;
+
+    // Unauthenticated
+    if (!profile) res.sendStatus(401);
+
+    else {
+        try {
+            const comment = await commentsDao.findCommentById(cid).populate('postedBy');
+
+            if (!comment) res.sendStatus(404);
+            else {
+                // Return 403 if not comment owner and critic
+                if (!((profile.isCritic && profile.username === comment.postedBy.username) || profile.isAdmin)) res.sendStatus(403);
+
+                // Proceed otherwise
+                else {
+                    await commentsDao.deleteComment(cid);
+                    res.sendStatus(204);
+                }
+            }
+        } catch (error) {
+            // Throw internal error
+            res.sendStatus(500);
+        }
+    }
 }
 
-export default(app) =>{
-    app.post('/api/title/:titleId/comments', createComment);
-    app.get('/api/comments', findAllComments);
-    app.get('/api/titles/:titleId/comments', findAllCommentsByMovie);
-    app.get('/api/comments/:uid', findAllCommentsByUser);
-    app.put('/api/comments/:cid', updateComment);
-    app.delete('/api/comments/:cid', deleteComment);
-}
+export default CommentController;

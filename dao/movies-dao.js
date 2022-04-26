@@ -28,6 +28,15 @@ export const findMovieById = (mid) =>
 export const findMovieByImdbId = (imdbID) =>
   movieModel.findOne({ imdbID: imdbID });
 
+/**
+ * Retrieve only _id of a movie in DB based on imdbID
+ *
+ * @param imdbID
+ * @returns {QueryWithHelpers<Pick<Document<unknown>, "_id"> | null, HydratedDocument<unknown, {}, {}>, {}, unknown>}
+ */
+export const getMovieIdByImdbId = (imdbID) =>
+  movieModel.exists({imdbID: imdbID});
+
 export const createMovie = (movie) =>
     movieModel.create(movie);
 
