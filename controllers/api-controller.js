@@ -1,8 +1,9 @@
-import * as movieDao from "../dao/movies-dao.js";
-
-const API_KEY = 'k_ouq4szjo';
-const API_URL = 'https://imdb-api.com/en/API';
 import axios from "axios";
+import * as moviesDao from "../dao/movies-dao.js";
+import {countCommentsByMovieID} from "../dao/comments-dao.js";
+
+const API_KEY = process.env.API_KEY ||'k_ouq4szjo';
+const API_URL = 'https://imdb-api.com/en/API';
 
 /**
  * Search for movies based on given query.
@@ -24,13 +25,15 @@ const displaySearchDetails = async (req, res) => {
 
     // IMDB API server could be busy and give results: null as response.
     // Tell client of gateway timeout (504)
-    if (searchResults.errorMessage) res.sendStatus(504);
+    if (searchResults.errorMessage) res.status(504).send(searchResults.errorMessage);
     else {
       // Otherwise, proceed as usual.
       const count = searchResults.length;
-      const parsedResult = searchResults.map(title => {
-        return {"_id": title.id, "title": title.title, "image": title.image}
-      });
+      const parsedResult = await Promise.all(searchResults.map(async title => {
+        const movieId = await moviesDao.getMovieIdByImdbId(title.id);
+        const commentCount = movieId? await countCommentsByMovieID(movieId._id): 0;
+        return {"_id": title.id, "title": title.title, "image": title.image, "commentCount": commentCount}
+      }));
 
       // Return parsed return
       res.json({count: count, titles: parsedResult});
@@ -96,7 +99,7 @@ const pullMovieDetails = async (req, res) => {
  */
 const addDetailsToDB = async (movieDetails) => {
   // Check if this movie is already exist in DB to prevent duplication
-  const existMovie = await movieDao.findMovieByImdbId(movieDetails.id);
+  const existMovie = await moviesDao.getMovieIdByImdbId(movieDetails.id);
 
   // Insert if not exist
   if (!existMovie) {
@@ -106,7 +109,7 @@ const addDetailsToDB = async (movieDetails) => {
       moviePoster: movieDetails.image,
       movieDescription: movieDetails.plot
     }
-    await movieDao.createMovie(movieInMongoFormat)
+    await moviesDao.createMovie(movieInMongoFormat)
   }
 }
 
