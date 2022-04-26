@@ -77,7 +77,7 @@ const pullMovieDetails = async (req, res) => {
       }
 
       // Update movie detail in local DB as async side effect.
-      // addDetailsToDB(movieData);
+      addDetailsToDB(movieData);
 
       // Return parsed return
       res.json(parsedDetail);
@@ -91,21 +91,23 @@ const pullMovieDetails = async (req, res) => {
 /**
  * Add movie detail to local DB
  *
- * @param movie detail
+ * @param movieDetails detail
  * @returns {Promise<void>}
  */
 const addDetailsToDB = async (movieDetails) => {
   // Check if this movie is already exist in DB to prevent duplication
+  const existMovie = await movieDao.findMovieByImdbId(movieDetails.id);
 
-  // Insert if exist
-  const movieInMongoFormat = {
+  // Insert if not exist
+  if (!existMovie) {
+    const movieInMongoFormat = {
       movieTitle: movieDetails.title,
       imdbID: movieDetails.id,
       moviePoster: movieDetails.image,
-      movieDescription: movieDetails.plot,
-      yearReleased: movieDetails.year
+      movieDescription: movieDetails.plot
     }
-  await movieDao.createMovie(movieInMongoFormat)
+    await movieDao.createMovie(movieInMongoFormat)
+  }
 }
 
 export default (app) => {
