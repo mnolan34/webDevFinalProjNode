@@ -96,7 +96,7 @@ const pullMovieDetails = async (req, res) => {
  */
 const addDetailsToDB = async (movieDetails) => {
   // Check if this movie is already exist in DB to prevent duplication
-  const existMovie = await movieDao.findMovieByImdbId(movieDetails.imdbID);
+  const existMovie = await movieDao.findMovieByImdbId(movieDetails.id);
 
   // Insert if not exist
   if (!existMovie) {
