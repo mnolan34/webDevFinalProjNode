@@ -7,6 +7,7 @@ const movieController = (app) => {
     app.post('/api/movies', createMovie);
     app.delete('/api/movies/:mid', deleteMovie);
     app.put('/api/movies/:mid', updateMovie);
+    app.get('/api/movies/random/:num', getRandomMovies);
 }
 
 const findAllMovies = async (req, res) => {
@@ -33,5 +34,9 @@ const updateMovie = async (req, res) => {
     return await moviesDao.updateMovie(movieId, updatedMovie).then(status => res.json(status));
 }
 
+const getRandomMovies = async (req, res) => {
+    const numMovies = req.params.num;
+    return await moviesDao.getRandomMovies(numMovies).then(movie => res.json(movie));
+}
 
 export default movieController;
