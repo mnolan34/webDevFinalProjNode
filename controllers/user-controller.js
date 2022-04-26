@@ -1,7 +1,8 @@
 import * as usersDao from "../dao/users-dao.js";
+import * as userDao from "../dao/users-dao.js";
 
 const userController = (app) => {
-    app.get('/api/users', findAllUsers);
+    app.get('/api/users', getAllUserProfiles);
     //app.get('/api/users/:typeOfUser', findUserByType);
     app.get('/api/users/:uid', findUserById);
     app.get('/api/users/types/admin/:uid', findIfUserAdmin);
@@ -67,5 +68,31 @@ const findUserByUsername = async (req, res) => {
     res.send(returnedUser);
 }
 */
+
+/**
+ * Get all user profile data for admin
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+const getAllUserProfiles = async (req, res) => {
+    const profile = req.session['profile'];
+
+    // Unauthenticated
+    if (!profile) res.sendStatus(401);
+    // If user is admin, return all user profile data
+    else if (profile.isAdmin) {
+        try {
+            const result = await userDao.findAllUsers();
+            res.json(result);
+        } catch (error) {
+            // Throw internal server error.
+            res.sendStatus(500);
+        }
+    }
+    // Unauthorized
+    else res.sendStatus(403);
+}
 
 export default userController;

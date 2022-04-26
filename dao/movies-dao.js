@@ -19,6 +19,24 @@ export const findAllMovies = () =>
 export const findMovieById = (mid) =>
     movieModel.findOne({ _id: mid });
 
+/**
+ * Find movie detail in DB based on IMDB ID
+ *
+ * @param imdbID
+ * @returns {QueryWithHelpers<HydratedDocument<unknown, {}, {}> | null, HydratedDocument<unknown, {}, {}>, {}, unknown>}
+ */
+export const findMovieByImdbId = (imdbID) =>
+  movieModel.findOne({ imdbID: imdbID });
+
+/**
+ * Retrieve only _id of a movie in DB based on imdbID
+ *
+ * @param imdbID
+ * @returns {QueryWithHelpers<Pick<Document<unknown>, "_id"> | null, HydratedDocument<unknown, {}, {}>, {}, unknown>}
+ */
+export const getMovieIdByImdbId = (imdbID) =>
+  movieModel.exists({imdbID: imdbID});
+
 export const createMovie = (movie) =>
     movieModel.create(movie);
 
