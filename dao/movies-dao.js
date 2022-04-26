@@ -26,7 +26,7 @@ export const findMovieById = (mid) =>
  * @returns {QueryWithHelpers<HydratedDocument<unknown, {}, {}> | null, HydratedDocument<unknown, {}, {}>, {}, unknown>}
  */
 export const findMovieByImdbId = (imdbID) =>
-  movieModel.findOne({ imdbID: imdbID });
+    movieModel.findOne({ imdbID: imdbID });
 
 /**
  * Retrieve only _id of a movie in DB based on imdbID
@@ -35,7 +35,7 @@ export const findMovieByImdbId = (imdbID) =>
  * @returns {QueryWithHelpers<Pick<Document<unknown>, "_id"> | null, HydratedDocument<unknown, {}, {}>, {}, unknown>}
  */
 export const getMovieIdByImdbId = (imdbID) =>
-  movieModel.exists({imdbID: imdbID});
+    movieModel.exists({ imdbID: imdbID });
 
 export const createMovie = (movie) =>
     movieModel.create(movie);
@@ -45,3 +45,7 @@ export const deleteMovie = (mid) =>
 
 export const updateMovie = (mid, movie) =>
     movieModel.updateOne({ _id: mid }, { $set: movie });
+
+export const getRandomMovies = (numMovies) => {
+    return movieModel.aggregate([{ $sample: { size: parseInt(numMovies, 10) } }]);
+}

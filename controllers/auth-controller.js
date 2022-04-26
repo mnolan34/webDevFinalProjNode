@@ -61,7 +61,9 @@ const parseProfileData = (result) => {
     emailOrNumber: result.emailOrNumber,
     isCritic: result.isCritic,
     isAdmin: result.isAdmin,
-    dateJoined: result.dateJoined
+    dateJoined: result.dateJoined,
+    userID: result._id,
+    avatarImage: result.avatarImage
   }
   return profileData;
 }
