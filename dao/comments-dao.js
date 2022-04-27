@@ -63,4 +63,5 @@ export const findAllCommentsByMovie = (_id) =>
  * @param  {} uid
  */
 export const findAllCommentsByUser = (uid) =>
-  commentsModel.find({ postedBy: uid }).populate("comment").exec();
+  commentsModel.find({ postedBy: uid })
+    .populate("comment").populate("postedBy").populate("movie").exec();
