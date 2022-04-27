@@ -64,7 +64,7 @@ const updateUser = async (req, res) => {
 const findUserByUsername = async (req, res) => {
     const userName = req.params.username;
     const returnedUser = usersDao.findUserByUsername(userName);
-    res.send(returnedUser);
+    res.json(returnedUser);
 }
 
 
