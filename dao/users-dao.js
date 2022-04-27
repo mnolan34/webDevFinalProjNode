@@ -49,7 +49,7 @@ export const updateUser = (uid, user) =>
 
 /**
  * Finds user according to username
- * @param {string} userName Unique username of user to be pulled
+ * @param {string} username Unique username of user to be pulled
  * @returns User Object
  */
 export const findUserByUsername = (username) =>

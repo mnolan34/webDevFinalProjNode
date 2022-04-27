@@ -1,5 +1,7 @@
 import commentsModel from "../mongoose/Comments/comments-model.js";
 
+/**
+ */
 export const findAllComments = () =>
   commentsModel.find();
 
@@ -36,18 +38,30 @@ export const findCommentById = (_id) =>
  * @returns {QueryWithHelpers<number, HydratedDocument<unknown, {}, {}>, {}, unknown>}
  */
 export const countCommentsByMovieID = async (mid) => {
-  return commentsModel.count({movie: mid});
+  return commentsModel.count({ movie: mid });
 };
 
-export const deleteComment = (cid) =>
-  commentsModel.deleteOne({_id: cid});
+/**
+ * @param  {} cid
+ */
+export const deleteComment = (cid) => commentsModel.deleteOne({ _id: cid });
 
+/**
+ * @param  {} cid
+ * @param  {} comment
+ */
 export const updateComment = (cid, comment) =>
-  commentsModel.updateOne({_id: cid}, {$set: {comment: comment}});
+  commentsModel.updateOne({ _id: cid }, { $set: { comment: comment } });
 
+/**
+ * @param  {} _id
+ */
 export const findAllCommentsByMovie = (_id) =>
-  commentsModel.find({movie: _id}).sort({postedOn: -1});
+  commentsModel.find({ movie: _id }).sort({ postedOn: -1 });
 
-//Added functions
+/**
+ * @param  {} uid
+ */
 export const findAllCommentsByUser = (uid) =>
-  commentsModel.find({postedBy: uid});
+  commentsModel.find({ postedBy: uid })
+    .populate("comment").populate("postedBy").populate("movie").exec();
