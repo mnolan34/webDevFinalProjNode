@@ -8,7 +8,7 @@ const CommentController = (app) => {
     app.put('/api/comments/:cid', updateComment);
     app.delete('/api/comments/:cid', deleteComment);
     app.get('/api/comments', findAllComments);
-    app.get('/api/comments/:uid', findAllCommentsByUser);
+    app.get('/api/users/:uid/comments', findAllCommentsByUser);
 }
 
 /**
@@ -18,7 +18,7 @@ const CommentController = (app) => {
  * @param res
  * @returns {Promise<void>}
  */
-const createComment = async (req,res) => {
+const createComment = async (req, res) => {
     const profile = req.session['profile']
 
     // Unauthenticated
@@ -35,7 +35,7 @@ const createComment = async (req,res) => {
                 res.json({
                     _id: insertedComment._id,
                     timestamp: insertedComment.postedOn,
-                    });
+                });
             } catch (error) {
                 // Throw internal server error for any error.
                 res.sendStatus(500);
@@ -44,7 +44,7 @@ const createComment = async (req,res) => {
     }
 }
 
-const findAllComments = async (req,res) => {
+const findAllComments = async (req, res) => {
     const comments = await commentsDao.findAllComments()
     res.json(comments);
 }
@@ -85,12 +85,17 @@ const findAllCommentsByMovie = async (req, res) => {
         }
     }
 }
-
+/**
+ * Retrieves all movie comments made by a user from the database
+ * @param {Request} req The request from the client, 
+ * including the path parameter uid representing the user who has commented on a movie
+ * @param {Response} res The response to the client, 
+ * including the body as a JSON array containing the relevant comment objects
+ */
 const findAllCommentsByUser = async (req, res) => {
     const userId = req.params.uid;
-    const comments = await commentsDao.findAllCommentsByUser(userId);
-    res.json(comments);
-    //comments.then(comment => res.json(comment));
+    return await commentsDao.findAllCommentsByUser(userId)
+        .then(comments => res.json(comments));
 }
 
 /**
@@ -100,7 +105,7 @@ const findAllCommentsByUser = async (req, res) => {
  * @param res
  * @returns {Promise<void>}
  */
-const updateComment = async (req,res) => {
+const updateComment = async (req, res) => {
     const profile = req.session['profile'];
     const cid = req.params.cid;
 
@@ -136,7 +141,7 @@ const updateComment = async (req,res) => {
  * @param res
  * @returns {Promise<void>}
  */
-const deleteComment = async (req,res) => {
+const deleteComment = async (req, res) => {
     const profile = req.session['profile'];
     const cid = req.params.cid;
 
