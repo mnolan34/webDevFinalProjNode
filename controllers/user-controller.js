@@ -24,24 +24,24 @@ const findUsersByType = async (req, res) => {
  */
 
 const findUserById = async (req, res) => {
-    const userId = req.params["id"];
-    const user = usersDao.findUserById(userId);
-    if(user){
+    const userId = req.params.uid;
+    const user = await usersDao.findUserById(userId);
+    if (user) {
         res.json(user);
-    }else{
+    } else {
         res.sendStatus(404);
     }
 }
 
 const findIfUserCritic = async (req, res) => {
     const userId = req.params.uid;
-    const pulledUser = usersDao.findUserById(userId).then(user=>user);
+    const pulledUser = usersDao.findUserById(userId).then(user => user);
     return await res.json(pulledUser.isCritic());
 }
 
-const findIfUserAdmin = async(req, res) => {
+const findIfUserAdmin = async (req, res) => {
     const userId = req.params.uid;
-    const pulledUser = usersDao.findUserById(userId).then(user=>user);
+    const pulledUser = usersDao.findUserById(userId).then(user => user);
     return await res.json(pulledUser.isAdmin());
 }
 
