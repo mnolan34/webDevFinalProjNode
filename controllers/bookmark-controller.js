@@ -2,6 +2,7 @@
  * @file Controller RESTful web service API for bookmarks resource
  */
 import * as bookmarksDao from "../dao/bookmarks-dao.js";
+import * as moviesDao from "../dao/movies-dao.js";
 
 /**
  * Function that handles the url endpoints for the bookmarks resource
@@ -142,9 +143,10 @@ const isMovieBookmarkedbyUser = async (req, res) => {
     // For authenticated user
     else {
         const imdbID = req.params.titleId;
+        const mid = await moviesDao.findMovieByImdbId(imdbID).then(movie => movie._id);
         const userID = profile.userID;
         try {
-            const movieId = await bookmarksDao.findUserBookmarkedMovie(userID, imdbID);
+            const movieId = await bookmarksDao.findUserBookmarkedMovie(userID, mid);
             if (movieId) {
                 res.json({
                     isBookmarked: true,
