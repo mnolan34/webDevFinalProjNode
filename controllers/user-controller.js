@@ -9,6 +9,7 @@ const userController = (app) => {
     app.get('/api/users/types/critic/:uid', findIfUserCritic);
     app.post('/api/users', createUser);
     app.delete('/api/users/:uid', deleteUser);
+    app.delete('/api/users/username/:username/delete', deleteUserByUsername);
     app.put('/api/users/:uid', updateUser);
 }
 
@@ -52,6 +53,11 @@ const createUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     const userId = req.params.uid;
     return await usersDao.deleteUser(userId).then(status => res.json(status));
+}
+
+const deleteUserByUsername = async( req, res ) => {
+    const username = req.params.username;
+    return await usersDao.deleteUserByUsername(username).then(status => res.json(status));
 }
 
 const updateUser = async (req, res) => {
