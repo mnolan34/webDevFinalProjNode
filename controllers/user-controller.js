@@ -3,7 +3,7 @@ import * as userDao from "../dao/users-dao.js";
 
 const userController = (app) => {
     app.get('/api/users', getAllUserProfiles);
-    //app.get('/api/users/:typeOfUser', findUserByType);
+    app.get('/api/users/:username/titles', findUserByUsername);
     app.get('/api/users/:uid', findUserById);
     app.get('/api/users/types/admin/:uid', findIfUserAdmin);
     app.get('/api/users/types/critic/:uid', findIfUserCritic);
@@ -12,11 +12,11 @@ const userController = (app) => {
     app.put('/api/users/:uid', updateUser);
 }
 
+/*
 const findAllUsers = async (req, res) => {
     return await usersDao.findAllUsers().then(user => res.json(user));
 }
 
-/*
 const findUsersByType = async (req, res) => {
     const userType = req.params.typeOfUser;
     return await usersDao.findUsersByType(userType).then(user => res.json(user));
@@ -61,13 +61,12 @@ const updateUser = async (req, res) => {
     res.json(status);
 }
 
-/**
 const findUserByUsername = async (req, res) => {
     const userName = req.params.username;
     const returnedUser = usersDao.findUserByUsername(userName);
     res.send(returnedUser);
 }
-*/
+
 
 /**
  * Get all user profile data for admin
