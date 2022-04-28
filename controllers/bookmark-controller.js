@@ -111,7 +111,7 @@ const userTogglesBookmark = async (req, res) => {
             res.send({ isBookmarked: true });
         }
     } catch (e) {
-        res.set('Cache-Control', 'no-store').sendStatus(404);
+        res.sendStatus(404);
     }
 }
 
