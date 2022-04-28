@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
     isAdmin: { type: Boolean, default: false },
     password: { type: String, required: true },
     dateJoined: { type: Date, default: Date.now },
-    avatarImage: { type: String, default: "https://imgur.com/a/KdBKfPp" },
+    avatarImage: { type: String, default: "/images/default_avatars/smiley.png" },
 }, { collection: 'users' });
 
 export default userSchema;
