@@ -36,6 +36,14 @@ export const deleteUser = (uid) =>
   userModel.deleteOne({ _id : uid });
 
 /**
+ * Removes user from database via username
+ * @param {string} removedName Primary Username of user to be removed
+ * @returns Promise to be notified when user is removed from the database
+ */
+export const deleteUserByUsername = (removedName) =>
+    userModel.deleteOne({username : removedName});
+
+/**
  * Updates user with new values in database
  * @param {string} uid Primary key of user to be modified
  * @param {User} user User object containing properties and their new values

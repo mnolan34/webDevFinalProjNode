@@ -58,7 +58,8 @@ const findAllComments = async (req, res) => {
  */
 const findAllCommentsByMovie = async (req, res) => {
     const profile = req.session['profile'];
-    console.log(profile)
+
+    res.set('Cache-Control', 'no-store');
 
     // Unauthenticated
     if (!profile) res.sendStatus(401);
@@ -73,7 +74,8 @@ const findAllCommentsByMovie = async (req, res) => {
                 timestamp: comment.postedOn,
                 username: comment.postedBy.username,
                 comment: comment.comment,
-                avatar: comment.postedBy.avatar
+                avatar: comment.postedBy.avatarImage,
+                userId: comment.postedBy._id
             }))
             res.json({
                 count: parsedComments.length,
