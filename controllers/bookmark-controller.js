@@ -98,9 +98,8 @@ const userUnbookmarksMovie = async (req, res) => {
 const userTogglesBookmark = async (req, res) => {
     // not sure how to enforce log in here
     const userId = req.params.uid;
-    const mid = req.params.mid;
-
     try {
+        const mid = !req.params.mid.startsWith('tt')? req.params.mid: await moviesDao.getMovieIdByImdbId(req.params.mid).then(movie => movie._id);
         const userHasBookmarkedMovie = await bookmarksDao.findUserBookmarkedMovie(userId, mid);
         if (userHasBookmarkedMovie) {
             // unbookmark
@@ -112,7 +111,7 @@ const userTogglesBookmark = async (req, res) => {
             res.send({ isBookmarked: true });
         }
     } catch (e) {
-        res.sendStatus(404);
+        res.set('Cache-Control', 'no-store').sendStatus(404);
     }
 }
 
@@ -143,12 +142,13 @@ const isMovieBookmarkedbyUser = async (req, res) => {
 
     // For authenticated user
     else {
-        const imdbID = req.params.titleId;
-        const mid = await moviesDao.findMovieByImdbId(imdbID).then(movie => movie._id);
         const userID = profile.userID;
+        res.set('Cache-Control', 'no-store');
         try {
-            const movieId = await bookmarksDao.findUserBookmarkedMovie(userID, mid);
-            if (movieId) {
+            const movie = await moviesDao.getMovieIdByImdbId(req.params.titleId);
+            const mid = movie._id;
+            const bookmark = await bookmarksDao.findUserBookmarkedMovie(userID, mid);
+            if (bookmark) {
                 res.json({
                     isBookmarked: true,
                 });
