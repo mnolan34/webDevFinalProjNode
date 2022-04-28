@@ -105,11 +105,12 @@ const userTogglesBookmark = async (req, res) => {
         if (userHasBookmarkedMovie) {
             // unbookmark
             await bookmarksDao.userUnbookmarksMovie(userId, mid);
+            res.send({ isBookmarked: false });
         } else {
             // bookmark
             await bookmarksDao.userBookmarksMovie(userId, mid);
+            res.send({ isBookmarked: true });
         }
-        res.sendStatus(200);
     } catch (e) {
         res.sendStatus(404);
     }
