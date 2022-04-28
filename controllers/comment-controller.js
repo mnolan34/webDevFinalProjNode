@@ -59,6 +59,8 @@ const findAllComments = async (req, res) => {
 const findAllCommentsByMovie = async (req, res) => {
     const profile = req.session['profile'];
 
+    res.set('Cache-Control', 'no-store');
+
     // Unauthenticated
     if (!profile) res.sendStatus(401);
 
