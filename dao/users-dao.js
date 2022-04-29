@@ -17,7 +17,7 @@ export const findAllUsers = () => userModel.find();
  * @returns Promise To be notified when user is retrieved from the database
  */
 export const findUserById = (uid) =>
-  userModel.findOne({_id : uid});
+  userModel.findOne({ _id: uid });
 
 /**
  * Inserts user instance into the database
@@ -32,8 +32,7 @@ export const createUser = (user) =>
  * @param {string} uid Primary key of user to be removed
  * @returns Promise To be notified when user is removed from the database
  */
-export const deleteUser = (uid) =>
-  userModel.deleteOne({ _id : uid });
+export const deleteUser = (uid) => userModel.deleteOne({ _id: uid });
 
 /**
  * Removes user from database via username
@@ -41,7 +40,7 @@ export const deleteUser = (uid) =>
  * @returns Promise to be notified when user is removed from the database
  */
 export const deleteUserByUsername = (removedName) =>
-    userModel.deleteOne({username : removedName});
+  userModel.deleteOne({ username: removedName });
 
 /**
  * Updates user with new values in database
@@ -61,10 +60,10 @@ export const updateUser = (uid, user) =>
  * @returns User Object
  */
 export const findUserByUsername = (username) =>
-  userModel.findOne({username : username});
+  userModel.findOne({ username: username });
 
 export const findUserByEmailOrNumber = (emailOrNumber) =>
-  userModel.findOne({emailOrNumber : emailOrNumber});
+  userModel.findOne({ emailOrNumber: emailOrNumber });
 
 /**
  * Finds array of users based on userType
@@ -77,5 +76,4 @@ export const findUserByType = (type) =>
   userModel.find(type);
 
 export const verifyCredential = (emailOrNumber, password) =>
-  userModel.findOne({emailOrNumber: emailOrNumber,password: password});
-
+  userModel.findOne({ emailOrNumber: emailOrNumber, password: password });
