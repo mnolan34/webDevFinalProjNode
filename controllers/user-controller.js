@@ -13,16 +13,6 @@ const userController = (app) => {
     app.put('/api/users/:uid', updateUser);
 }
 
-/*
-const findAllUsers = async (req, res) => {
-    return await usersDao.findAllUsers().then(user => res.json(user));
-}
-
-const findUsersByType = async (req, res) => {
-    const userType = req.params.typeOfUser;
-    return await usersDao.findUsersByType(userType).then(user => res.json(user));
-}
- */
 
 const findUserById = async (req, res) => {
     const userId = req.params.uid;
@@ -55,7 +45,7 @@ const deleteUser = async (req, res) => {
     return await usersDao.deleteUser(userId).then(status => res.json(status));
 }
 
-const deleteUserByUsername = async( req, res ) => {
+const deleteUserByUsername = async (req, res) => {
     const username = req.params.username;
     return await usersDao.deleteUserByUsername(username).then(status => res.json(status));
 }
