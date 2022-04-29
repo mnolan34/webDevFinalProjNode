@@ -28,8 +28,7 @@ export const createComment = (userID, mid, commentBody) =>
  * @param _id
  * @returns {QueryWithHelpers<HydratedDocument<unknown, {}, {}> | null, HydratedDocument<unknown, {}, {}>, {}, unknown>}
  */
-export const findCommentById = (_id) =>
-  commentsModel.findById(_id);
+export const findCommentById = (_id) => commentsModel.findById(_id);
 
 /**
  * Count the number of comments based on imdbID

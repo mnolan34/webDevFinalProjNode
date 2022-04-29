@@ -6,6 +6,7 @@ const CommentController = (app) => {
     app.post('/api/titles/:titleId/comments', createComment);
     app.get('/api/titles/:titleId/comments', findAllCommentsByMovie);
     app.put('/api/comments/:cid', updateComment);
+    app.get('/api/comments/:cid', findCommentById);
     app.delete('/api/comments/:cid', deleteComment);
     app.get('/api/comments', findAllComments);
     app.get('/api/users/:uid/comments', findAllCommentsByUser);
@@ -171,5 +172,22 @@ const deleteComment = async (req, res) => {
         }
     }
 }
+
+
+/**
+ * Find comment by ID
+ * @param  {} req
+ * @param  {} res
+ */
+const findCommentById = async (req, res) => {
+    const commentID = req.params.cid;
+    const comment = await commentsDao.findCommentById(commentID);
+    if (comment) {
+        res.json(comment);
+    } else {
+        res.sendStatus(404);
+    }
+}
+
 
 export default CommentController;
