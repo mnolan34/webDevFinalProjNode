@@ -43,7 +43,7 @@ export const countCommentsByMovieID = async (mid) => {
 /**
  * @param  {} cid
  */
-export const deleteComment = (cid) => commentsModel.deleteOne({ _id: cid });
+export const deleteComment = async (cid) => await commentsModel.deleteOne({ _id: cid });
 
 /**
  * @param  {} cid
@@ -64,3 +64,9 @@ export const findAllCommentsByMovie = (_id) =>
 export const findAllCommentsByUser = (uid) =>
   commentsModel.find({ postedBy: uid })
     .populate("comment").populate("postedBy").populate("movie").exec();
+
+
+/**
+ * @param  {} uid
+ */
+export const deleteAllCommentsByUser = (uid) => commentsModel.deleteMany({ postedBy: uid });
