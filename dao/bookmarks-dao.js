@@ -10,22 +10,29 @@ export const findAllUsersThatBookmarkedMovie = (mid) =>
 export const findUserBookmarkedMovie = (uid, mid) =>
     BookmarkModel.findOne(
         {
-                movie: mid,
-                bookmarkedBy: uid
-                }
-        );
+            movie: mid,
+            bookmarkedBy: uid
+        }
+    );
 
 export const userBookmarksMovie = (uid, mid) =>
     BookmarkModel.create(
-        { movie: mid,
-            bookmarkedBy: uid }
+        {
+            movie: mid,
+            bookmarkedBy: uid
+        }
     );
 
 export const userUnbookmarksMovie = (uid, mid) =>
     BookmarkModel.deleteOne(
-        { movie: mid,
-            bookmarkedBy: uid }
+        {
+            movie: mid,
+            bookmarkedBy: uid
+        }
     );
 
 export const deleteAllBookmarksOfMovie = (mid) =>
     BookmarkModel.deleteMany({ movie: mid });
+
+export const deleteAllBookmarksByUser = (uid) =>
+    BookmarkModel.deleteMany({ bookmarkedBy: uid }); 

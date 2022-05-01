@@ -1,6 +1,6 @@
 import * as usersDao from "../dao/users-dao.js";
 import * as commentsDao from "../dao/comments-dao.js";
-
+import * as bookmarksDao from "../dao/bookmarks-dao.js";
 
 const userController = (app) => {
     app.get('/api/users', getAllUserProfiles);
@@ -44,7 +44,7 @@ const createUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     const userId = req.params.uid;
     await commentsDao.deleteAllCommentsByUser(userId);
-
+    await bookmarksDao.deleteAllBookmarksByUser(userId);
     return await usersDao.deleteUser(userId).then(status => res.json(status));
 }
 
@@ -65,7 +65,6 @@ const findUserByUsername = async (req, res) => {
     const returnedUser = usersDao.findUserByUsername(userName);
     res.json(returnedUser);
 }
-
 
 /**
  * Get all user profile data for admin
