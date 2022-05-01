@@ -43,7 +43,7 @@ export const countCommentsByMovieID = async (mid) => {
 /**
  * @param  {} cid
  */
-export const deleteComment = (cid) => commentsModel.deleteOne({ _id: cid });
+export const deleteComment = async (cid) => commentsModel.deleteOne({ _id: cid });
 
 /**
  * @param  {} cid
