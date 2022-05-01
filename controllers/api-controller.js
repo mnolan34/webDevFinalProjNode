@@ -1,8 +1,8 @@
 import axios from "axios";
 import * as moviesDao from "../dao/movies-dao.js";
-import {countCommentsByMovieID} from "../dao/comments-dao.js";
+import { countCommentsByMovieID } from "../dao/comments-dao.js";
 
-const API_KEY = process.env.API_KEY ||'k_ouq4szjo';
+const API_KEY = process.env.API_KEY || 'k_7lfgcu9r';
 const API_URL = 'https://imdb-api.com/en/API';
 
 /**
@@ -19,7 +19,7 @@ const displaySearchDetails = async (req, res) => {
   try {
     // Handle 20x response
     // Send search request. Throw error if no respond in 15 seconds
-    const searchResponse = await axios.get(`${API_URL}/SearchMovie/${API_KEY}/${searchedMovie}`, {timeout: 15000});
+    const searchResponse = await axios.get(`${API_URL}/SearchMovie/${API_KEY}/${searchedMovie}`, { timeout: 15000 });
     // Parse the response from IMDB API
     const searchResults = searchResponse.data.results;
 
@@ -31,12 +31,12 @@ const displaySearchDetails = async (req, res) => {
       const count = searchResults.length;
       const parsedResult = await Promise.all(searchResults.map(async title => {
         const movieId = await moviesDao.getMovieIdByImdbId(title.id);
-        const commentCount = movieId? await countCommentsByMovieID(movieId._id): 0;
-        return {"_id": title.id, "title": title.title, "image": title.image, "commentCount": commentCount}
+        const commentCount = movieId ? await countCommentsByMovieID(movieId._id) : 0;
+        return { "_id": title.id, "title": title.title, "image": title.image, "commentCount": commentCount }
       }));
 
       // Return parsed return
-      res.json({count: count, titles: parsedResult});
+      res.json({ count: count, titles: parsedResult });
     }
   } catch (error) {
     // Handle time out and error response (Not 20x)
@@ -56,7 +56,7 @@ const pullMovieDetails = async (req, res) => {
   try {
     // Handle 20x response
     // Send detail request. Throw error if no respond in 15 seconds
-    const detailResponse = await axios.get(`${API_URL}/Title/${API_KEY}/${movieID}/Trailer,`, {timeout: 15000});
+    const detailResponse = await axios.get(`${API_URL}/Title/${API_KEY}/${movieID}/Trailer,`, { timeout: 15000 });
     // Parse the response from IMDB API
     const movieData = detailResponse.data;
 
@@ -72,11 +72,13 @@ const pullMovieDetails = async (req, res) => {
         "plot": movieData.plot,
         "image": movieData.image,
         "trailer": movieData.trailer ? movieData.trailer.linkEmbed : null,
-        "similars": !movieData.similars? []: movieData.similars.map(similar => {return {
+        "similars": !movieData.similars ? [] : movieData.similars.map(similar => {
+          return {
             "_id": similar.id,
             "title": similar.title,
             "image": similar.image
-          }})
+          }
+        })
       }
 
       // Update movie detail in local DB as async side effect.
